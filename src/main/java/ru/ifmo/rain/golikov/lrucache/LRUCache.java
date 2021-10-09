@@ -12,8 +12,14 @@ public abstract class LRUCache<K, V> {
     this.capacity = capacity;
   }
 
+  protected abstract void putImpl(final K key, final V value);
+
   //   Puts given key into the cache, associated with given value.
-  public abstract void put(final K key, final V value);
+  public void put(final K key, final V value) {
+    putImpl(key, value);
+    var stored = get(key);
+    Validate.isTrue(stored.isPresent() && stored.get() == value);
+  }
 
   //  Returns value associated with given key.
   public abstract Optional<V> get(final K key);

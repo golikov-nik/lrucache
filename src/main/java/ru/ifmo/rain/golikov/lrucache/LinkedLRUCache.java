@@ -14,7 +14,7 @@ public class LinkedLRUCache<K, V> extends LRUCache<K, V> {
   }
 
   @Override
-  public void put(final K key, final V value) {
+  public void putImpl(final K key, final V value) {
     removeKey(key);
     if (data.size() == capacity) {
       removeKey(entries.first());
@@ -38,7 +38,7 @@ public class LinkedLRUCache<K, V> extends LRUCache<K, V> {
     return Optional.ofNullable(data.get(key)).map(node -> {
       var value = node.getValue();
       removeKey(key);
-      put(key, value);
+      putImpl(key, value);
       return value;
     });
   }
