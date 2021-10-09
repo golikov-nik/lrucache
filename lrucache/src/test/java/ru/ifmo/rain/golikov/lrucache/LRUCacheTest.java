@@ -60,16 +60,35 @@ public class LRUCacheTest {
   @Test
   public void testLRU() {
     setCapacity(3);
+    checkSize(0);
     putCache(0, 0);
+    checkSize(1);
     putCache(1, 1);
+    checkSize(2);
     putCache(2, 2);
+    checkSize(3);
     assertValueEquals(0, 0);
     putCache(3, 3);
+    checkSize(3);
     assertValueEquals(2, 2);
     assertValueEquals(0, 0);
     assertValueEquals(3, 3);
     putCache(4, 4);
+    checkSize(3);
     assertMissing(2);
+  }
+
+  @Test
+  public void testSize() {
+    checkSize(0);
+    for (int i = 0; i < BIG; i++) {
+      putCache(i, i);
+      checkSize(Math.min(CAPACITY, i + 1));
+    }
+  }
+
+  private void checkSize(final int size) {
+    assertThat(cache.size()).isEqualTo(size);
   }
 
   private void putCache(int key, int value) {

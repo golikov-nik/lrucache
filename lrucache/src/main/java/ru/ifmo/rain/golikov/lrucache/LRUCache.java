@@ -16,9 +16,11 @@ public abstract class LRUCache<K, V> {
 
   //   Puts given key into the cache, associated with given value.
   public void put(final K key, final V value) {
+    int prevSize = size();
     putImpl(key, value);
     var stored = get(key);
     Validate.isTrue(stored.isPresent() && stored.get() == value);
+    Validate.isTrue(size() >= prevSize, "Size decreased after put");
   }
 
   //  Returns value associated with given key.
@@ -32,5 +34,15 @@ public abstract class LRUCache<K, V> {
   //  Returns the maximum number of keys this cache can store simultaneously.
   public int getCapacity() {
     return capacity;
+  }
+
+  protected abstract int sizeImpl();
+
+  //  Returns current number of keys stored in cache.
+  public int size() {
+    int curSize = sizeImpl();
+    Validate.isTrue(curSize >= 0, "Size should be non-negative");
+    Validate.isTrue(curSize <= capacity, "Size should not exceed capacity");
+    return curSize;
   }
 }

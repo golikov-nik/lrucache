@@ -1,5 +1,7 @@
 package ru.ifmo.rain.golikov.lrucache;
 
+import org.apache.commons.lang.Validate;
+
 import java.util.*;
 
 public class LinkedLRUCache<K, V> extends LRUCache<K, V> {
@@ -41,5 +43,11 @@ public class LinkedLRUCache<K, V> extends LRUCache<K, V> {
       putImpl(key, value);
       return value;
     });
+  }
+
+  @Override
+  protected int sizeImpl() {
+    Validate.isTrue(data.size() == entries.size(), "Map and list size differ");
+    return data.size();
   }
 }
