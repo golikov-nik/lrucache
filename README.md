@@ -1,2 +1,2 @@
-# lrucache
-Software Design HW1 - LRU Cache
+# Software Design ITMO
+Software Design homeworks
