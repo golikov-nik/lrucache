@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.junit.Assert.*;
-
+ 
 public class LRUCacheTest {
   private static final int CAPACITY = 4;
   private static final int BIG = 5 * CAPACITY + 5;
