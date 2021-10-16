@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="PPO" />
         <module name="lrucache" />
+        <module name="mockapi" />
       </profile>
     </annotationProcessing>
   </component>

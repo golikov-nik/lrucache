@@ -27,6 +27,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/lrucache/pom.xml" />
+        <option value="$PROJECT_DIR$/mockapi/pom.xml" />
       </list>
     </option>
   </component>
