@@ -1,4 +1,4 @@
-package ru.ifmo.rain.golikov.mockapi;
+package ru.ifmo.rain.golikov.mockapi.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;

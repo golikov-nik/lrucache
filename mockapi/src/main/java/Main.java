@@ -1,13 +1,13 @@
-import ru.ifmo.rain.golikov.mockapi.ApiClient;
-import ru.ifmo.rain.golikov.mockapi.ApiManager;
+import ru.ifmo.rain.golikov.mockapi.api.ApiClient;
+import ru.ifmo.rain.golikov.mockapi.api.ApiManager;
 
 import java.util.*;
 
 public class Main {
   public static void main(String[] args) {
-    var client = new ApiClient("104f8af6104f8af61012eee30210177ef91104f104f8af648e710b8a4b63d445e681ded");
+    var client = ApiClient.fromEnv();
     var manager = new ApiManager(client);
-    var count = manager.countPosts("icpc", 24);
+    var count = manager.countPosts("#food", 24);
     System.out.println(Arrays.toString(count));
   }
 }

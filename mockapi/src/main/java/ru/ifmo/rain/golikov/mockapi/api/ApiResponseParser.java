@@ -1,4 +1,4 @@
-package ru.ifmo.rain.golikov.mockapi;
+package ru.ifmo.rain.golikov.mockapi.api;
 
 import com.google.gson.JsonParser;
 
