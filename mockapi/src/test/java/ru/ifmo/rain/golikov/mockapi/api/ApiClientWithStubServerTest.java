@@ -9,9 +9,9 @@ import java.time.Instant;
 import java.util.*;
 
 import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
+import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
 import static com.xebialabs.restito.semantics.Action.stringContent;
-import static com.xebialabs.restito.semantics.Condition.method;
-import static com.xebialabs.restito.semantics.Condition.startsWithUri;
+import static com.xebialabs.restito.semantics.Condition.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.ifmo.rain.golikov.mockapi.TestUtils.makeInstants;
 import static ru.ifmo.rain.golikov.mockapi.TestUtils.withStubServer;
@@ -52,6 +52,15 @@ public class ApiClientWithStubServerTest {
       var endTime = Instant.ofEpochSecond(566);
       var result = client.getPosts(hashtag, startTime, endTime);
       assertThat(result).isEqualTo(makeInstants(List.of(241L, 566L, 288L)));
+
+      verifyHttp(s).once(
+         method(Method.GET),
+         startsWithUri("/method/newsfeed.search"),
+         parameter("q", hashtag),
+         parameter("access_token", API_KEY),
+         parameter("start_time", String.valueOf(startTime.getEpochSecond() + 1)),
+         parameter("end_time", String.valueOf(endTime.getEpochSecond()))
+      );
     });
   }
 }
