@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="refactoring" />
         <module name="PPO" />
         <module name="lrucache" />
         <module name="mockapi" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="15" />
+    <bytecodeTargetLevel target="15">
+      <module name="refactoring" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
