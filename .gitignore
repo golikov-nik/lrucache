@@ -112,3 +112,5 @@ fabric.properties
 
 /lrucache/target/
 /mockapi/target/
+/refactoring/target/
+/test.db
