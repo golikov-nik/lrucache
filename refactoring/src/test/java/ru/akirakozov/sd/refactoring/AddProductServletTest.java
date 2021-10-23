@@ -18,6 +18,7 @@ import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,11 +66,25 @@ public class AddProductServletTest {
   }
 
   @Test
-  public void testAdd() throws IOException, InterruptedException {
+  public void testSingleAdd() throws IOException, InterruptedException {
+    testAdd(new Product("iphone6", 300));
+  }
+
+  @Test
+  public void testMultipleAdd() throws IOException, InterruptedException {
+    var products = List.of(new Product("a", 1),
+                                      new Product("b", 2),
+                                      new Product("c", 3));
+    for (var product : products) {
+      testAdd(product);
+    }
+  }
+
+  private void testAdd(final Product product) throws IOException, InterruptedException {
     HttpClient client = HttpClient.newHttpClient();
     String format = "http://localhost:%d/add-product?name=%s&price=%d";
     HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(String.format(format, PORT, "iphone6", 300)))
+            .uri(URI.create(String.format(format, PORT, product.name(), product.price())))
             .build();
     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
     assertEquals(response.body(), "OK\n");
