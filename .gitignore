@@ -114,3 +114,4 @@ fabric.properties
 /mockapi/target/
 /refactoring/target/
 /test.db
+/refactoring/test.db
