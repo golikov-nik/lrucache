@@ -1,6 +1,6 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import ru.akirakozov.sd.refactoring.Product;
+import ru.akirakozov.sd.refactoring.data.Product;
 import ru.akirakozov.sd.refactoring.db.DBManager;
 
 import javax.servlet.http.HttpServlet;

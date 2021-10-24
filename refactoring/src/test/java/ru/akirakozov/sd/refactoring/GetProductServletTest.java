@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring;
 
 import org.junit.Test;
+import ru.akirakozov.sd.refactoring.data.Product;
 
 import java.util.*;
 

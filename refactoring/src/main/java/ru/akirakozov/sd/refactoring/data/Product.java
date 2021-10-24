@@ -1,3 +1,3 @@
-package ru.akirakozov.sd.refactoring;
+package ru.akirakozov.sd.refactoring.data;
 
 public record Product(String name, long price) {}

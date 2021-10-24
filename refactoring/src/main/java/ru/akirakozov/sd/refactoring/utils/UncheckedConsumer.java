@@ -1,4 +1,4 @@
-package ru.akirakozov.sd.refactoring.db;
+package ru.akirakozov.sd.refactoring.utils;
 
 @FunctionalInterface
 public interface UncheckedConsumer<T> {

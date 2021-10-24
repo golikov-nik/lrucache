@@ -1,5 +1,7 @@
 package ru.akirakozov.sd.refactoring.db;
 
+import ru.akirakozov.sd.refactoring.utils.UncheckedConsumer;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;

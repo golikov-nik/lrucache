@@ -1,6 +1,6 @@
 package ru.akirakozov.sd.refactoring.html;
 
-import ru.akirakozov.sd.refactoring.Product;
+import ru.akirakozov.sd.refactoring.data.Product;
 
 import java.io.*;
 

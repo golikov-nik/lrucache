@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.db;
 
-import ru.akirakozov.sd.refactoring.Product;
+import ru.akirakozov.sd.refactoring.data.Product;
+import ru.akirakozov.sd.refactoring.utils.UncheckedConsumer;
 
 import java.sql.ResultSet;
 
