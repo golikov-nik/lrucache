@@ -5,6 +5,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.Before;
+import ru.akirakozov.sd.refactoring.db.DBManager;
 import ru.akirakozov.sd.refactoring.servlet.AddProductServlet;
 import ru.akirakozov.sd.refactoring.servlet.GetProductsServlet;
 import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
@@ -14,15 +15,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.*;
 import java.util.stream.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static ru.akirakozov.sd.refactoring.db.DBManager.withDatabase;
 
 public class ServletTest {
   public static final Product IPHONE_6 = new Product("iphone6", 300);
@@ -37,10 +34,10 @@ public class ServletTest {
 
   @Before
   public void beforeTest() throws Exception {
-    withDatabase(stmt -> stmt.executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCT" +
+    DBManager.executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCT" +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             " NAME           TEXT    NOT NULL, " +
-            " PRICE          INT     NOT NULL)"));
+            " PRICE          INT     NOT NULL)");
 
     server = new Server(PORT);
 
@@ -57,7 +54,7 @@ public class ServletTest {
 
   @After
   public void afterTest() throws Exception {
-    withDatabase(stmt -> stmt.executeUpdate("DROP TABLE PRODUCT"));
+    DBManager.executeUpdate("DROP TABLE PRODUCT");
 
     server.stop();
   }

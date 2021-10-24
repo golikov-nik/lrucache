@@ -1,8 +1,6 @@
 package ru.akirakozov.sd.refactoring.db;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 
 public class DBManager {
   public static final String DB_URL = "jdbc:sqlite:test.db";
@@ -15,5 +13,9 @@ public class DBManager {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static void executeUpdate(final String sql) {
+    withDatabase(stmt -> stmt.executeUpdate(sql));
   }
 }
