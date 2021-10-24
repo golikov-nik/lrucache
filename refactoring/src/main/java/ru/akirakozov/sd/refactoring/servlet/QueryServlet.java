@@ -1,12 +1,11 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.db.DBClient;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.sql.ResultSet;
-
-import static ru.akirakozov.sd.refactoring.db.DBClient.withDatabase;
 
 /**
  * @author akirakozov
@@ -17,61 +16,45 @@ public class QueryServlet extends HttpServlet {
         String command = request.getParameter("command");
 
         if ("max".equals(command)) {
-          withDatabase(stmt -> {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("<h1>Product with max price: </h1>");
-
-            while (rs.next()) {
-              String  name = rs.getString("name");
-              int price  = rs.getInt("price");
-              response.getWriter().println(name + "\t" + price + "</br>");
-            }
-            response.getWriter().println("</body></html>");
-
-            rs.close();
-          });
+          DBClient.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1",
+                  rs -> {
+                    response.getWriter().println("<html><body>");
+                    response.getWriter().println("<h1>Product with max price: </h1>");
+                  },
+                  rs -> {
+                    String  name = rs.getString("name");
+                    int price  = rs.getInt("price");
+                    response.getWriter().println(name + "\t" + price + "</br>");
+                  },
+                  rs -> response.getWriter().println("</body></html>"));
         } else if ("min".equals(command)) {
-          withDatabase(stmt -> {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("<h1>Product with min price: </h1>");
-
-            while (rs.next()) {
-              String  name = rs.getString("name");
-              int price  = rs.getInt("price");
-              response.getWriter().println(name + "\t" + price + "</br>");
-            }
-            response.getWriter().println("</body></html>");
-
-            rs.close();
-          });
+          DBClient.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1",
+                  rs -> {
+                    response.getWriter().println("<html><body>");
+                    response.getWriter().println("<h1>Product with min price: </h1>");
+                  },
+                  rs -> {
+                    String  name = rs.getString("name");
+                    int price  = rs.getInt("price");
+                    response.getWriter().println(name + "\t" + price + "</br>");
+                  },
+                  rs -> response.getWriter().println("</body></html>"));
         } else if ("sum".equals(command)) {
-          withDatabase(stmt -> {
-            ResultSet rs = stmt.executeQuery("SELECT SUM(price) FROM PRODUCT");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("Summary price: ");
-
-            if (rs.next()) {
-              response.getWriter().println(rs.getInt(1));
-            }
-            response.getWriter().println("</body></html>");
-
-            rs.close();
-          });
+          DBClient.executeQuery("SELECT SUM(price) FROM PRODUCT",
+                  rs -> {
+                    response.getWriter().println("<html><body>");
+                    response.getWriter().println("Summary price: ");
+                  },
+                  rs -> response.getWriter().println(rs.getInt(1)),
+                  rs -> response.getWriter().println("</body></html>"));
         } else if ("count".equals(command)) {
-          withDatabase(stmt -> {
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM PRODUCT");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("Number of products: ");
-
-            if (rs.next()) {
-              response.getWriter().println(rs.getInt(1));
-            }
-            response.getWriter().println("</body></html>");
-
-            rs.close();
-          });
+          DBClient.executeQuery("SELECT COUNT(*) FROM PRODUCT",
+                  rs -> {
+                    response.getWriter().println("<html><body>");
+                    response.getWriter().println("Number of products: ");
+                  },
+                  rs -> response.getWriter().println(rs.getInt(1)),
+                  rs -> response.getWriter().println("</body></html>"));
         } else {
             response.getWriter().println("Unknown command: " + command);
         }

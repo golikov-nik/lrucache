@@ -1,11 +1,10 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.db.DBClient;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.ResultSet;
-
-import static ru.akirakozov.sd.refactoring.db.DBClient.withDatabase;
 
 /**
  * @author akirakozov
@@ -14,19 +13,15 @@ public class GetProductsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-      withDatabase(stmt -> {
-        ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
-        response.getWriter().println("<html><body>");
-
-        while (rs.next()) {
+      DBClient.executeQuery("SELECT * FROM PRODUCT",
+        rs -> response.getWriter().println("<html><body>"),
+        rs -> {
           String  name = rs.getString("name");
           int price  = rs.getInt("price");
           response.getWriter().println(name + "\t" + price + "</br>");
-        }
-        response.getWriter().println("</body></html>");
 
-        rs.close();
-      });
+        },
+        rs -> response.getWriter().println("</body></html>"));
 
       response.setContentType("text/html");
       response.setStatus(HttpServletResponse.SC_OK);

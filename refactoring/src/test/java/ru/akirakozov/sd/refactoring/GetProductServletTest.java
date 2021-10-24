@@ -3,10 +3,8 @@ package ru.akirakozov.sd.refactoring;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.stream.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class GetProductServletTest extends ServletTest {
 
