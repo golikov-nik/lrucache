@@ -22,16 +22,12 @@ public class DBClient {
   }
 
   public static void executeQuery(final String sql,
-                                  final UncheckedConsumer<ResultSet> before,
-                                  final UncheckedConsumer<ResultSet> processEach,
-                                  final UncheckedConsumer<ResultSet> after) {
+                                  final UncheckedConsumer<ResultSet> action) {
     withDatabase(stmt -> {
       try (var rs = stmt.executeQuery(sql)) {
-        before.accept(rs);
         while (rs.next()) {
-          processEach.accept(rs);
+          action.accept(rs);
         }
-        after.accept(rs);
       }
     });
   }
