@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.*;
+import java.util.stream.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -28,10 +29,10 @@ public class ServletTest {
           new Product("b", 2),
           new Product("c", 3));
   public static final int PORT = 8081;
-  protected HttpClient client = HttpClient.newHttpClient();
+  public static final String LINE_END = "</br>";
+  public static final String BASE_URI = "http://localhost:%d/".formatted(PORT);
+  private final HttpClient client = HttpClient.newHttpClient();
   private Server server;
-  public static final String BASE_URI =
-          "http://localhost:%d/".formatted(PORT);
 
   @Before
   public void beforeTest() throws Exception {
@@ -91,13 +92,30 @@ public class ServletTest {
 
   protected String makeRequest(final String uri) {
     try {
-      String format = BASE_URI + uri;
       HttpRequest request = HttpRequest.newBuilder()
-              .uri(URI.create(format))
+              .uri(URI.create(BASE_URI + uri))
               .build();
       return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
     } catch (final IOException | InterruptedException e) {
       throw new RuntimeException("Exception occured while making request", e);
     }
+  }
+
+  protected Product readProduct(final String line) {
+    assertTrue(line.endsWith(LINE_END));
+    var items = line.substring(0, line.length() - LINE_END.length()).split("\t");
+    assertEquals(items.length, 2);
+    return new Product(items[0], Integer.parseInt(items[1]));
+  }
+
+  protected Set<Product> getProducts() {
+    return getLines(makeRequest("get-products"))
+            .stream()
+            .map(this::readProduct)
+            .collect(Collectors.toSet());
+  }
+
+  protected String makeQuery(final String command) {
+    return makeRequest("query?command=" + command);
   }
 }
