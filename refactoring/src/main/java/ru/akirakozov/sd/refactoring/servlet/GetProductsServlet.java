@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.ResultSet;
 
-import static ru.akirakozov.sd.refactoring.db.DBManager.withDatabase;
+import static ru.akirakozov.sd.refactoring.db.DBClient.withDatabase;
 
 /**
  * @author akirakozov

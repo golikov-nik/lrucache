@@ -1,21 +1,23 @@
 package ru.akirakozov.sd.refactoring.db;
 
-import java.sql.DriverManager;
+import ru.akirakozov.sd.refactoring.Product;
+
+import static ru.akirakozov.sd.refactoring.db.DBClient.executeUpdate;
 
 public class DBManager {
-  public static final String DB_URL = "jdbc:sqlite:test.db";
-
-  public static void withDatabase(final DBConsumer action) {
-    try {
-      try (var c = DriverManager.getConnection(DB_URL); var stmt = c.createStatement()) {
-        action.apply(stmt);
-      }
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+  public static void initDB() {
+    executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCT" +
+            "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            " NAME           TEXT    NOT NULL, " +
+            " PRICE          INT     NOT NULL)");
   }
 
-  public static void executeUpdate(final String sql) {
-    withDatabase(stmt -> stmt.executeUpdate(sql));
+  public static void dropDB() {
+    executeUpdate("DROP TABLE PRODUCT");
+  }
+
+  public static void addProduct(final Product product) {
+    executeUpdate("INSERT INTO PRODUCT " +
+            "(NAME, PRICE) VALUES (\"" + product.name() + "\"," + product.price() + ")");
   }
 }

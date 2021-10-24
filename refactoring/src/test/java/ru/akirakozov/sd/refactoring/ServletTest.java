@@ -34,10 +34,7 @@ public class ServletTest {
 
   @Before
   public void beforeTest() throws Exception {
-    DBManager.executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCT" +
-            "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            " NAME           TEXT    NOT NULL, " +
-            " PRICE          INT     NOT NULL)");
+    DBManager.initDB();
 
     server = new Server(PORT);
 
@@ -54,8 +51,7 @@ public class ServletTest {
 
   @After
   public void afterTest() throws Exception {
-    DBManager.executeUpdate("DROP TABLE PRODUCT");
-
+    DBManager.dropDB();
     server.stop();
   }
 
@@ -91,7 +87,7 @@ public class ServletTest {
     assertTrue(line.endsWith(LINE_END));
     var items = line.substring(0, line.length() - LINE_END.length()).split("\t");
     assertEquals(items.length, 2);
-    return new Product(items[0], Integer.parseInt(items[1]));
+    return new Product(items[0], Long.parseLong(items[1]));
   }
 
   protected Set<Product> getProducts() {

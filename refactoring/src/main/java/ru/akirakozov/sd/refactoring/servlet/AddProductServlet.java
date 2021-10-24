@@ -1,5 +1,6 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.Product;
 import ru.akirakozov.sd.refactoring.db.DBManager;
 
 import javax.servlet.http.HttpServlet;
@@ -17,8 +18,7 @@ public class AddProductServlet extends HttpServlet {
         String name = request.getParameter("name");
         long price = Long.parseLong(request.getParameter("price"));
 
-        DBManager.executeUpdate("INSERT INTO PRODUCT " +
-                "(NAME, PRICE) VALUES (\"" + name + "\"," + price + ")");
+        DBManager.addProduct(new Product(name, price));
 
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
