@@ -1,7 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.Product;
-import ru.akirakozov.sd.refactoring.db.DBClient;
+import ru.akirakozov.sd.refactoring.db.DBManager;
 import ru.akirakozov.sd.refactoring.html.HTMLWriter;
 
 import javax.servlet.http.HttpServlet;
@@ -20,29 +20,22 @@ public class QueryServlet extends HttpServlet {
         if ("max".equals(command)) {
           try (var writer = new HTMLWriter(response.getWriter())) {
             writer.printHeader("Product with max price: ");
-            DBClient.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1",
-                    rs -> writer.writeProduct(new Product(rs.getString("name"), rs.getInt("price")))
-            );
+            DBManager.queryMax(rs -> writer.writeProduct(new Product(rs.getString("name"), rs.getInt("price"))));
           }
         } else if ("min".equals(command)) {
           try (var writer = new HTMLWriter(response.getWriter())) {
             writer.printHeader("Product with min price: ");
-            DBClient.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1",
-                    rs -> writer.writeProduct(new Product(rs.getString("name"), rs.getInt("price")))
-            );
+            DBManager.queryMin(rs -> writer.writeProduct(new Product(rs.getString("name"), rs.getInt("price"))));
           }
         } else if ("sum".equals(command)) {
           try (var writer = new HTMLWriter(response.getWriter())) {
             writer.println("Summary price: ");
-            DBClient.executeQuery("SELECT SUM(price) FROM PRODUCT",
-                    rs -> writer.println(rs.getInt(1))
-            );
+            DBManager.querySumPrice(rs -> writer.println(rs.getInt(1)));
           }
         } else if ("count".equals(command)) {
           try (var writer = new HTMLWriter(response.getWriter())) {
             writer.println("Number of products: ");
-            DBClient.executeQuery("SELECT COUNT(*) FROM PRODUCT",
-                    rs -> writer.println(rs.getInt(1)));
+            DBManager.queryCount(rs -> writer.println(rs.getInt(1)));
           }
         } else {
             response.getWriter().println("Unknown command: " + command);

@@ -1,7 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.Product;
-import ru.akirakozov.sd.refactoring.db.DBClient;
+import ru.akirakozov.sd.refactoring.db.DBManager;
 import ru.akirakozov.sd.refactoring.html.HTMLWriter;
 
 import javax.servlet.http.HttpServlet;
@@ -17,9 +17,7 @@ public class GetProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       try (var writer = new HTMLWriter(response.getWriter())) {
-        DBClient.executeQuery("SELECT * FROM PRODUCT",
-                rs -> writer.writeProduct(new Product(rs.getString("name"), rs.getInt("price")))
-        );
+        DBManager.queryAll(rs -> writer.writeProduct(new Product(rs.getString("name"), rs.getInt("price"))));
       }
 
       response.setContentType("text/html");
