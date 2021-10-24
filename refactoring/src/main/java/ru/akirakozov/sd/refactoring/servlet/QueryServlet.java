@@ -1,15 +1,11 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.command.*;
-import ru.akirakozov.sd.refactoring.db.DBManager;
-import ru.akirakozov.sd.refactoring.html.HTMLWriter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-
-import static ru.akirakozov.sd.refactoring.db.DBUtils.productFromRS;
 
 /**
  * @author akirakozov

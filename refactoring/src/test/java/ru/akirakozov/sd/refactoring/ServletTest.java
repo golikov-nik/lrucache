@@ -1,15 +1,10 @@
 package ru.akirakozov.sd.refactoring;
 
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.Before;
 import ru.akirakozov.sd.refactoring.data.Product;
 import ru.akirakozov.sd.refactoring.db.DBManager;
-import ru.akirakozov.sd.refactoring.servlet.AddProductServlet;
-import ru.akirakozov.sd.refactoring.servlet.GetProductsServlet;
-import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
+import ru.akirakozov.sd.refactoring.server.ServerManager;
 
 import java.io.*;
 import java.net.URI;
@@ -27,33 +22,20 @@ public class ServletTest {
   public static final List<Product> PRODUCT_LIST = List.of(new Product("a", 1),
           new Product("b", 2),
           new Product("c", 3));
-  public static final int PORT = 8081;
   public static final String LINE_END = "</br>";
-  public static final String BASE_URI = "http://localhost:%d/".formatted(PORT);
+  public static final String BASE_URI = "http://localhost:%d/".formatted(ServerManager.PORT);
   private final HttpClient client = HttpClient.newHttpClient();
-  private Server server;
 
   @Before
   public void beforeTest() throws Exception {
     DBManager.initDB();
-
-    server = new Server(PORT);
-
-    ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-    context.setContextPath("/");
-    server.setHandler(context);
-
-    context.addServlet(new ServletHolder(new AddProductServlet()), "/add-product");
-    context.addServlet(new ServletHolder(new GetProductsServlet()), "/get-products");
-    context.addServlet(new ServletHolder(new QueryServlet()), "/query");
-
-    server.start();
+    ServerManager.start();
   }
 
   @After
   public void afterTest() throws Exception {
     DBManager.dropDB();
-    server.stop();
+    ServerManager.stop();
   }
 
   protected void addProduct(final Product product) {
