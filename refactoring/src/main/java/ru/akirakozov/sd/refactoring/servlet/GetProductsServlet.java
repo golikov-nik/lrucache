@@ -9,35 +9,30 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import static ru.akirakozov.sd.refactoring.db.DBManager.withDatabase;
+
 /**
  * @author akirakozov
  */
 public class GetProductsServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                Statement stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
-                response.getWriter().println("<html><body>");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+      withDatabase(stmt -> {
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
+        response.getWriter().println("<html><body>");
 
-                while (rs.next()) {
-                    String  name = rs.getString("name");
-                    int price  = rs.getInt("price");
-                    response.getWriter().println(name + "\t" + price + "</br>");
-                }
-                response.getWriter().println("</body></html>");
-
-                rs.close();
-                stmt.close();
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        while (rs.next()) {
+          String  name = rs.getString("name");
+          int price  = rs.getInt("price");
+          response.getWriter().println(name + "\t" + price + "</br>");
         }
+        response.getWriter().println("</body></html>");
 
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        rs.close();
+      });
+
+      response.setContentType("text/html");
+      response.setStatus(HttpServletResponse.SC_OK);
     }
 }

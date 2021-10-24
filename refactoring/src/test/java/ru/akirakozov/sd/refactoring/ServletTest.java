@@ -22,6 +22,7 @@ import java.util.stream.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static ru.akirakozov.sd.refactoring.db.DBManager.withDatabase;
 
 public class ServletTest {
   public static final Product IPHONE_6 = new Product("iphone6", 300);
@@ -36,16 +37,10 @@ public class ServletTest {
 
   @Before
   public void beforeTest() throws Exception {
-    try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-      String sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
-              "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-              " NAME           TEXT    NOT NULL, " +
-              " PRICE          INT     NOT NULL)";
-      Statement stmt = c.createStatement();
-
-      stmt.executeUpdate(sql);
-      stmt.close();
-    }
+    withDatabase(stmt -> stmt.executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCT" +
+            "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            " NAME           TEXT    NOT NULL, " +
+            " PRICE          INT     NOT NULL)"));
 
     server = new Server(PORT);
 
@@ -62,13 +57,7 @@ public class ServletTest {
 
   @After
   public void afterTest() throws Exception {
-    try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-      String sql = "DROP TABLE PRODUCT";
-      Statement stmt = c.createStatement();
-
-      stmt.executeUpdate(sql);
-      stmt.close();
-    }
+    withDatabase(stmt -> stmt.executeUpdate("DROP TABLE PRODUCT"));
 
     server.stop();
   }
