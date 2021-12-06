@@ -115,3 +115,7 @@ fabric.properties
 /refactoring/target/
 /test.db
 /refactoring/test.db
+/todo.db
+/visitor/target/
+/bridge/target/
+/mvc/.mvn/
