@@ -33,6 +33,7 @@
         <option value="$PROJECT_DIR$/bridge/pom.xml" />
         <option value="$PROJECT_DIR$/visitor/pom.xml" />
         <option value="$PROJECT_DIR$/clock/pom.xml" />
+        <option value="$PROJECT_DIR$/akka/pom.xml" />
       </list>
     </option>
   </component>
