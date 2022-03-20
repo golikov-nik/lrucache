@@ -11,6 +11,7 @@
     <modules>
         <module>akka</module>
         <module>rxjava</module>
+        <module>docker</module>
     </modules>
 
     <properties>
